@@ -104,6 +104,8 @@ class DoubanDownloaderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
+# TODO apply selenium here to deal with js
+
 class user_agent(object):
     def process_request(self, request, spider):
         pass

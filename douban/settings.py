@@ -112,5 +112,6 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+# TODO setup database location(static or can be setup)
 MONGO_URL = 'mongodb://localhost:27017/'
 MONGO_DB = 'douban'
