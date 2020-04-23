@@ -88,7 +88,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'douban.pipelines.DoubanPipeline': 300,
+    'douban.pipelines.DoubanMoviePipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -112,6 +112,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-# TODO setup database location(static or can be setup)
-MONGO_URL = 'mongodb://localhost:27017/'
-MONGO_DB = 'douban'
+
+

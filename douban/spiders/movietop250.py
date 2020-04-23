@@ -4,7 +4,7 @@ from douban.items import MovieItem
 
 
 class DoubanmovieSpider(scrapy.Spider):
-    name = 'movieTop250'
+    name = 'movietop250'
     allowed_domains = ['movie.douban.com']
     start_urls = ['https://movie.douban.com/top250']
 
