@@ -105,7 +105,7 @@ class DoubanDownloaderMiddleware(object):
 
 
 # TODO apply selenium here to deal with js
-
+# TODO finish user_agent middleware
 class user_agent(object):
     def process_request(self, request, spider):
         pass
