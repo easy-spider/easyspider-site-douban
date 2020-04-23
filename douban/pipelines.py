@@ -18,11 +18,6 @@ class DoubanPipeline(object):
         self.mongo_db = mongo_db
         self.client = pymongo.MongoClient(self.mongo_url)
         self.db = self.client[self.mongo_db]
-        collist = self.db.list_collection_names()
-
-        print("col test")
-        if len(collist) == 0:  # 判断 sites 集合是否存在
-            print("empty col")
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -36,7 +31,7 @@ class DoubanPipeline(object):
 
     def process_item(self, item, spider):
         data = dict(item)
-        self.db[item.collection].insert(data)
+        self.db["MovieTop250"].insert(data)
         return item
 
     def close_spider(self, item):
