@@ -105,7 +105,6 @@ class DoubanDownloaderMiddleware(object):
 
 
 # TODO apply selenium here to deal with js
-# TODO finish user_agent middleware
 
 class user_agent(object):
     def __init__(self):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from douban.items import MovieItem
+from douban.items import MovieTop250Item
 
 
 class DoubanmovieSpider(scrapy.Spider):
@@ -14,7 +14,7 @@ class DoubanmovieSpider(scrapy.Spider):
 
         for selector in movie_list:
             # 遍历每个电影列表，从其中精准抓取所需要的信息并保存为item对象
-            item = MovieItem()
+            item = MovieTop250Item()
             item['ranking'] = selector.xpath(".//div[@class='pic']/em/text()").extract_first()
             item['name'] = selector.xpath(".//span[@class='title']/text()").extract_first()
             text = selector.xpath(".//div[@class='bd']/p[1]/text()").extract()
@@ -25,13 +25,13 @@ class DoubanmovieSpider(scrapy.Spider):
             item['star'] = selector.css('.rating_num::text').extract_first()
             item['comments'] = selector.xpath(".//div[@class='star']/span[4]/text()").extract_first()
             item['describe'] = selector.xpath(".//span[@class='inq']/text()").extract_first()
-            print(item)
+            # print(item)
             yield item  # 将结果item对象返回给Item管道
         # 爬取网页中的下一个页面url信息
         next_link = response.xpath("//span[@class='next']/a[1]/@href").extract_first()
         if next_link:
             next_link = "https://movie.douban.com/top250" + next_link
-            print(next_link)
+            # print(next_link)
             # 将Request请求提交给调度器
             yield scrapy.Request(next_link, callback=self.parse)
 

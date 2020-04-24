@@ -1,4 +1,4 @@
-# TODO finish custom_settings
+# TODO finish custom_settings, separate different spiders with its middleware and pipeline
 movieTop250Setting = {
 
 }
