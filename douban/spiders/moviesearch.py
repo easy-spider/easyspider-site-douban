@@ -15,6 +15,7 @@ class MoviesearchSpider(scrapy.Spider):
     # start_urls = ['https://movie.douban.com/subject/1924599/']
     start_urls = ['https://movie.douban.com/subject/1291546/']
 
+
     def __init__(self, **kwargs):
         self.key_word = kwargs['keyword']
         self.page = kwargs['page']
