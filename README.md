@@ -18,7 +18,7 @@ Use mongodb as database to store resources
 *It is not recommanded to run this repo respectively!*
 - Run: <br>
 > python run.py <br><br>
-This will start to crawl resources from the website, according to the sipder and other arguments written in run.py. 
+This will start to crawl resources from the website, according to the spider and other arguments written in run.py. 
 
 - Deployment: 
 > ./build.sh <br><br>
