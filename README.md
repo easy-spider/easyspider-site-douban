@@ -33,7 +33,9 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 - Design the argument interface
 - Apply Selenium to deal with JS elements
 - Spider for movie search results
+- Apply custom_setting to different spiders
 
 ## TODO
-- Apply custom_setting to different spiders
+- Support local log storage
+- Fix bugs in Spider for movie search results
 - Extract template from this first Scrapy script
