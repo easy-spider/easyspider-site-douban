@@ -57,7 +57,7 @@ class DoubanSpiderMiddleware(object):
             yield r
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
 
 
 class DoubanDownloaderMiddleware(object):
@@ -104,40 +104,43 @@ class DoubanDownloaderMiddleware(object):
         pass
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
 
 
-class SeleniumMiddleware():
+# TODO make chrome headless work
+class SeleniumMiddleware:
     def __init__(self):
         self.logger = getLogger(__name__)
 
     def process_request(self, request, spider):
-        '''
+        """
         用chrome抓取页面
         :param request: Request请求对象
         :param spider: Spider对象
         :return: HtmlResponse响应
-        '''
+        """
         # 依靠meta中的标记，来决定是否需要使用selenium来爬取
-        usedSelenium = request.meta.get('usedSelenium', False)
+        usedSelenium = request.meta.get("usedSelenium", False)
         if usedSelenium:
-            self.logger.debug('chrome is getting page')
+            self.logger.debug("chrome is getting page")
             try:
                 spider.browser.get(request.url)
                 # filename = 'response'
                 # open(filename, 'w').write(spider.browser.page_source)
             except Exception as e:
-                self.logger.debug(f'chrome getting page error, Exception = {e}')
+                self.logger.debug(f"chrome getting page error, Exception = {e}")
                 print(f"chrome getting page error, Exception = {e}")
                 return HtmlResponse(url=request.url, status=500, request=request)
             else:
                 time.sleep(3)
-                return HtmlResponse(url=request.url,
-                                    body=spider.browser.page_source,
-                                    request=request,
-                                    # 最好根据网页的具体编码而定
-                                    encoding='utf-8',
-                                    status=200)
+                return HtmlResponse(
+                    url=request.url,
+                    body=spider.browser.page_source,
+                    request=request,
+                    # 最好根据网页的具体编码而定
+                    encoding="utf-8",
+                    status=200,
+                )
 
 
 class user_agent(object):
@@ -160,8 +163,8 @@ class user_agent(object):
             "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
             "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
-            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
         ]
 
     def process_request(self, request, spider):
-        request.headers['USER_AGENT'] = rd.choice(self.user_agent_list)
+        request.headers["USER_AGENT"] = rd.choice(self.user_agent_list)

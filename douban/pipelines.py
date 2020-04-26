@@ -20,9 +20,13 @@ class MongodbPipeline(object):
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
-            mongo_url=crawler.settings.get('MONGO_URL'),
-            mongo_db=crawler.settings.get('BOT_NAME')+'_'+crawler.settings.get('SPIDER_NAME'),
-            mongo_col=crawler.settings.get('TASK_ID')+'_'+crawler.settings.get('JOB_ID'),
+            mongo_url=crawler.settings.get("MONGO_URL"),
+            mongo_db=crawler.settings.get("BOT_NAME")
+            + "_"
+            + crawler.settings.get("SPIDER_NAME"),
+            mongo_col=crawler.settings.get("TASK_ID")
+            + "_"
+            + crawler.settings.get("JOB_ID"),
         )
 
     def open_spider(self, spider):
