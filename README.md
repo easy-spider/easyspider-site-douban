@@ -12,8 +12,9 @@ Use mongodb as database to store resources
 - Scrapy 2.0.1
 - selenium 3.141.0
 - scrapyd-client  1.1.0 
+- pydispatcher	2.0.5
 - pymongo 3.10.1
-- Google Chrome	80.0.3987.122 (Official Build) (64-bit)
+- Google Chrome	80.0.3987.122 & chromediver(same version)
 
 ## Run And Deployment
 *It is not recommanded to run this repo respectively!*
