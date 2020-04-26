@@ -13,6 +13,7 @@ Use mongodb as database to store resources
 - selenium 3.141.0
 - scrapyd-client  1.1.0 
 - pymongo 3.10.1
+- Google Chrome	80.0.3987.122 (Official Build) (64-bit)
 
 ## Run And Deployment
 *It is not recommanded to run this repo respectively!*
@@ -30,9 +31,9 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 - Pipeline to store resources into mongodb
 - Use user_agent middleware to change user_agent dynamically
 - Design the argument interface
+- Apply Selenium to deal with JS elements
+- Spider for movie search results
 
 ## TODO
-- Apply Selenium to deal with JS elements
-- Finsh spider for movie search results
 - Apply custom_setting to different spiders
-- Extract template from this first scrapy script
+- Extract template from this first Scrapy script

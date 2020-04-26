@@ -1,29 +1,73 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from douban.items import MovieSearchItem
+from douban.custom_settings import movieSearchSetting
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
+from pydispatch import dispatcher
+from scrapy import signals
 
 
-# TODO finsh DouBan Search crawl
+# TODO Fix crawl TV series
+# TODO Fix description(eg: '活着')
+
 
 class MoviesearchSpider(scrapy.Spider):
     name = 'moviesearch'
     allowed_domains = ['movie.douban.com']
     # start_urls = ['http://movie.douban.com/']
-    # start_urls = ['https://movie.douban.com/subject/30211998/']
-    # start_urls = ['https://movie.douban.com/subject/1292052/']
-    # start_urls = ['https://movie.douban.com/subject/33411505/?tag=%E7%83%AD%E9%97%A8&from=gaia']
-    # start_urls = ['https://movie.douban.com/subject/1924599/']
-    start_urls = ['https://movie.douban.com/subject/1291546/']
-
+    custom_settings = movieSearchSetting
 
     def __init__(self, **kwargs):
+        # selenium setting
+        self.page_timeout = self.custom_settings['SELENIUM_PAGE_TIMEOUT']
+        self.element_timeout = self.custom_settings['SELENIUM_ELEMENT_TIMEOUT']
+        self.isLoadImage = self.custom_settings['LOAD_IMAGE']
+        self.windowHeight = self.custom_settings['WINDOW_HEIGHT']
+        self.windowWidth = self.custom_settings['WINDOW_WIDTH']
+        options = Options()
+        # options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument("--disable-gpu")
+        self.browser = webdriver.Chrome(chrome_options=options)
+        # self.browser = webdriver.Chrome()
+        if self.windowHeight and self.windowWidth:
+            self.browser.set_window_size(self.windowHeight, self.windowWidth)
+        self.browser.set_page_load_timeout(self.page_timeout)  # 页面加载超时时间
+        self.wait = WebDriverWait(self.browser, self.element_timeout)  # 指定元素加载超时时间
+
+        # url from arguments
         self.key_word = kwargs['keyword']
-        self.page = kwargs['page']
+        self.start_pos = str((int(kwargs['page']) - 1) * 15)
+        self.search_result_url = 'https://search.douban.com/movie/subject_search?' + \
+                                 'search_text=' + self.key_word + \
+                                 '&start=' + self.start_pos
+
+        dispatcher.connect(receiver=self.mySpiderCloseHandle,
+                           signal=signals.spider_closed
+                           )
+
+    def mySpiderCloseHandle(self, spider):
+        self.browser.quit()
+
+    def start_requests(self):
+        # print(self.search_result_url)
+        return [scrapy.Request(self.search_result_url, meta={'usedSelenium': True, 'dont_redirect': False},
+                               callback=self.parse_search_result)]
+
+    def parse_search_result(self, response):
+        movie_pages = response.css("div[class*='sc-bZQynM']")
+        print("test: movie_pages size", len(movie_pages))
+        for movie_page in movie_pages:
+            # print("movie page:", movie_page)
+            movie_page = movie_page.css("div.item-root a::attr(href)").extract_first()
+            # print("movie page url:", movie_page)
+            yield scrapy.Request(movie_page, callback=self.parse)
 
     def parse(self, response):
-        # print("test args: key_word", self.key_word)
-        # print("test args: page", self.page)
         # 基本信息
+        self.logger.debug('start crawl movie page')
         item = MovieSearchItem()
 
         item['name'] = ''

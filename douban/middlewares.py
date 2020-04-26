@@ -7,6 +7,9 @@
 
 from scrapy import signals
 import random as rd
+from scrapy.http import HtmlResponse
+from logging import getLogger
+import time
 
 
 class DoubanSpiderMiddleware(object):
@@ -104,7 +107,38 @@ class DoubanDownloaderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-# TODO apply selenium here to deal with js
+class SeleniumMiddleware():
+    def __init__(self):
+        self.logger = getLogger(__name__)
+
+    def process_request(self, request, spider):
+        '''
+        用chrome抓取页面
+        :param request: Request请求对象
+        :param spider: Spider对象
+        :return: HtmlResponse响应
+        '''
+        # 依靠meta中的标记，来决定是否需要使用selenium来爬取
+        usedSelenium = request.meta.get('usedSelenium', False)
+        if usedSelenium:
+            self.logger.debug('chrome is getting page')
+            try:
+                spider.browser.get(request.url)
+                # filename = 'response'
+                # open(filename, 'w').write(spider.browser.page_source)
+            except Exception as e:
+                self.logger.debug(f'chrome getting page error, Exception = {e}')
+                print(f"chrome getting page error, Exception = {e}")
+                return HtmlResponse(url=request.url, status=500, request=request)
+            else:
+                time.sleep(3)
+                return HtmlResponse(url=request.url,
+                                    body=spider.browser.page_source,
+                                    request=request,
+                                    # 最好根据网页的具体编码而定
+                                    encoding='utf-8',
+                                    status=200)
+
 
 class user_agent(object):
     def __init__(self):
@@ -131,5 +165,3 @@ class user_agent(object):
 
     def process_request(self, request, spider):
         request.headers['USER_AGENT'] = rd.choice(self.user_agent_list)
-
-

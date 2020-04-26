@@ -9,7 +9,7 @@
 import pymongo
 
 
-class DoubanMoviePipeline(object):
+class MongodbPipeline(object):
     def __init__(self, mongo_url, mongo_db, mongo_col):
         self.mongo_url = mongo_url
         self.mongo_db = mongo_db
