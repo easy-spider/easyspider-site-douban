@@ -16,7 +16,4 @@ movieSearchSetting = {
     # ----------- selenium参数配置 -------------
     "SELENIUM_PAGE_TIMEOUT": 25,  # selenium浏览器的页面请求超时时间，单位秒
     "SELENIUM_ELEMENT_TIMEOUT": 25,  # selenium浏览器的元素请求超时时间，单位秒
-    "LOAD_IMAGE": False,  # 是否下载图片
-    "WINDOW_HEIGHT": 10,  # 浏览器窗口大小
-    "WINDOW_WIDTH": 10,
 }

@@ -2,15 +2,16 @@
 import scrapy
 from douban.items import MovieSearchItem
 from douban.custom_settings import movieSearchSetting
+from douban.useragent import user_agent_list
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from pydispatch import dispatcher
 from scrapy import signals
+import random as rd
 
 
 # TODO Fix crawl TV series
-# TODO Fix description(eg: '活着')
 
 
 class MoviesearchSpider(scrapy.Spider):
@@ -23,17 +24,16 @@ class MoviesearchSpider(scrapy.Spider):
         # selenium setting
         self.page_timeout = self.custom_settings["SELENIUM_PAGE_TIMEOUT"]
         self.element_timeout = self.custom_settings["SELENIUM_ELEMENT_TIMEOUT"]
-        self.isLoadImage = self.custom_settings["LOAD_IMAGE"]
-        self.windowHeight = self.custom_settings["WINDOW_HEIGHT"]
-        self.windowWidth = self.custom_settings["WINDOW_WIDTH"]
+        user_agent = rd.choice(user_agent_list)
         options = Options()
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
+        options.add_argument("--disable-infobars")
         options.add_argument("--no-sandbox")
+        options.add_argument("--disable-extensions")
         options.add_argument("--disable-gpu")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument(f'--user-agent={user_agent}')
         self.browser = webdriver.Chrome(chrome_options=options)
-        # self.browser = webdriver.Chrome()
-        if self.windowHeight and self.windowWidth:
-            self.browser.set_window_size(self.windowHeight, self.windowWidth)
         self.browser.set_page_load_timeout(self.page_timeout)  # 页面加载超时时间
         self.wait = WebDriverWait(self.browser, self.element_timeout)  # 指定元素加载超时时间
 
@@ -177,20 +177,26 @@ class MoviesearchSpider(scrapy.Spider):
         # 介绍
         # //*[@id="link-report"]/span[2]/text()[2]
         item["describe"] = ""
-        describe_summary = response.xpath(
+        describe_summarys = response.xpath(
             "//*[@id='content']//span[@property='v:summary']/text()"
-        ).extract_first()
+        ).extract()
         describe_hidden = response.xpath(
             "//*[@id='content']//span[@class='all hidden']/text()"
         ).extract()
         if len(describe_hidden) != 0:
             # print("describe_hidden not None", describe_hidden)
-            for describe in describe_hidden:
-                for s in describe.split():
-                    item["describe"] += s
-        elif describe_summary is not None:
-            for s in describe_summary.split():
-                item["describe"] += s
+            for i in range(0, len(describe_hidden)):
+                describe_hidden[i] = " ".join(describe_hidden[i].split('\u3000\u3000'))
+                describe_hidden[i] = " ".join(describe_hidden[i].split('\n'))
+                describe_hidden[i] = " ".join(describe_hidden[i].split())
+            item["describe"] += " ".join(describe_hidden)
+        elif describe_summarys is not None:
+            # print("describe_summarys len", len(describe_summarys))
+            for i in range(0, len(describe_summarys)):
+                describe_summarys[i] = " ".join(describe_summarys[i].split('\u3000\u3000'))
+                describe_summarys[i] = " ".join(describe_summarys[i].split('\n'))
+                describe_summarys[i] = " ".join(describe_summarys[i].split())
+            item["describe"] += " ".join(describe_summarys)
 
         # print("describe:", item['describe'])
 
