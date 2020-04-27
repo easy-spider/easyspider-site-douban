@@ -13,6 +13,9 @@ from douban.useragent import user_agent_list
 import time
 
 
+# TODO Add login middleware
+
+
 class DoubanSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the

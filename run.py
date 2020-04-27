@@ -6,7 +6,7 @@ execute(
         "scrapy",
         "crawl",
         "moviesearch",
-        "-akeyword=张艺谋",
+        "-akeyword=诺兰",
         "-apage=1",
         "-sMONGO_URL=mongodb://localhost:27017/",
         "-sSPIDER_NAME=moviesearch",
