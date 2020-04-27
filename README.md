@@ -1,10 +1,11 @@
 # easyspider-site-douban
+Scrapy scripts for douban movies, novels and musics
+
 An essential part of easyspider: https://github.com/easy-spider
 
 (Should Be) Generalized from easyspider-template: https://github.com/easy-spider/easyspider-template
 
-
-Scrapy scripts for douban movies, novels and musics, deployed by easyspider-scheduler：https://github.com/easy-spider/easyspider-scheduler
+Deployed by easyspider-scheduler：https://github.com/easy-spider/easyspider-scheduler
 
 Use mongodb as database to store resources
 ## Environment
