@@ -29,14 +29,16 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 ## What Is Available
 - Crawl all kinds of movie info, like rankings, names, introductions, stars, comments, descriptions and so on
 - Spider for Douban Top 250 movies
-- Pipeline to store resources into mongodb
-- Use user_agent middleware to change user_agent dynamically
-- Design the argument interface
-- Apply Selenium to deal with JS elements
 - Spider for movie search results
-- Apply custom_setting to different spiders
+- Pipeline to store resources into mongodb
+- Use user_agent middleware to change useragent dynamically
+- Design the argument interface for scrapyd
+- Use Selenium to deal with JS elements
+- Use custom_setting to different spiders
 
 ## TODO
+- Spider for novel search results
+- Spider for music search results
 - Support local log storage
 - Fix bugs in Spider for movie search results
 - Extract template from this first Scrapy script
