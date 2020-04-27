@@ -26,13 +26,13 @@ class MoviesearchSpider(scrapy.Spider):
         self.element_timeout = self.custom_settings["SELENIUM_ELEMENT_TIMEOUT"]
         user_agent = rd.choice(user_agent_list)
         options = Options()
-        options.add_argument('--headless')
+        options.add_argument("--headless")
         options.add_argument("--disable-infobars")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-extensions")
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-dev-shm-usage")
-        options.add_argument(f'--user-agent={user_agent}')
+        options.add_argument(f"--user-agent={user_agent}")
         self.browser = webdriver.Chrome(chrome_options=options)
         self.browser.set_page_load_timeout(self.page_timeout)  # 页面加载超时时间
         self.wait = WebDriverWait(self.browser, self.element_timeout)  # 指定元素加载超时时间
@@ -186,15 +186,17 @@ class MoviesearchSpider(scrapy.Spider):
         if len(describe_hidden) != 0:
             # print("describe_hidden not None", describe_hidden)
             for i in range(0, len(describe_hidden)):
-                describe_hidden[i] = " ".join(describe_hidden[i].split('\u3000\u3000'))
-                describe_hidden[i] = " ".join(describe_hidden[i].split('\n'))
+                describe_hidden[i] = " ".join(describe_hidden[i].split("\u3000\u3000"))
+                describe_hidden[i] = " ".join(describe_hidden[i].split("\n"))
                 describe_hidden[i] = " ".join(describe_hidden[i].split())
             item["describe"] += " ".join(describe_hidden)
         elif describe_summarys is not None:
             # print("describe_summarys len", len(describe_summarys))
             for i in range(0, len(describe_summarys)):
-                describe_summarys[i] = " ".join(describe_summarys[i].split('\u3000\u3000'))
-                describe_summarys[i] = " ".join(describe_summarys[i].split('\n'))
+                describe_summarys[i] = " ".join(
+                    describe_summarys[i].split("\u3000\u3000")
+                )
+                describe_summarys[i] = " ".join(describe_summarys[i].split("\n"))
                 describe_summarys[i] = " ".join(describe_summarys[i].split())
             item["describe"] += " ".join(describe_summarys)
 
