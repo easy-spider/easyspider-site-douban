@@ -4,7 +4,7 @@ An essential part of easyspider: https://github.com/easy-spider
 (Should Be) Generalized from easyspider-template: https://github.com/easy-spider/easyspider-template
 
 
-Scrapy scripts for douban movies, novels and musics, deployed by easyspider-scheduler
+Scrapy scripts for douban movies, novels and musics, deployed by easyspider-scheduler：https://github.com/easy-spider/easyspider-scheduler
 
 Use mongodb as database to store resources
 ## Environment
@@ -39,7 +39,7 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 ## TODO
 - Update Spider for Douban Top 250 movies, crawling more info.
 - Spider for novel search results
-- Spider for music search resultse
+- Spider for music search results
 - Support login
 - Support local log storage
 - Fix bugs in Spider for movie search results
