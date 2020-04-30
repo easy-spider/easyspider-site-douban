@@ -39,7 +39,7 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 ## TODO
 - Update Spider for Douban Top 250 movies, crawling more info.
 - Spider for novel search results
-- Spider for music search resultse
+- Spider for music search results
 - Support login
 - Support local log storage
 - Fix bugs in Spider for movie search results
