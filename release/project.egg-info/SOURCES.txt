@@ -8,10 +8,10 @@ douban/pipelines.py
 douban/settings.py
 douban/useragent.py
 douban/spiders/__init__.py
+douban/spiders/booksearch.py
 douban/spiders/moviesearch.py
 douban/spiders/movietop250.py
 douban/spiders/musicsearch.py
-douban/spiders/novelsearch.py
 project.egg-info/PKG-INFO
 project.egg-info/SOURCES.txt
 project.egg-info/dependency_links.txt
