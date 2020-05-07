@@ -1,19 +1,19 @@
 from scrapy.cmdline import execute
 
 # scrapy crawl moviesearch
-execute(
-    [
-        "scrapy",
-        "crawl",
-        "moviesearch",
-        "-akeyword=诺兰",
-        "-apage=1",
-        "-sMONGO_URL=mongodb://localhost:27017/",
-        "-sSPIDER_NAME=moviesearch",
-        "-sTASK_ID=001",
-        "-sJOB_ID=002",
-    ]
-)
+# execute(
+#     [
+#         "scrapy",
+#         "crawl",
+#         "moviesearch",
+#         "-akeyword=诺兰",
+#         "-apage=1",
+#         "-sMONGO_URL=mongodb://localhost:27017/",
+#         "-sSPIDER_NAME=moviesearch",
+#         "-sTASK_ID=001",
+#         "-sJOB_ID=002",
+#     ]
+# )
 
 # scrapy crawl movietop250
 # execute(
@@ -27,3 +27,18 @@ execute(
 #         "-sJOB_ID=002",
 #     ]
 # )
+
+# scrapy crawl moviesearch
+execute(
+    [
+        "scrapy",
+        "crawl",
+        "musicsearch",
+        "-akeyword=陈奕迅",
+        "-apage=1",
+        "-sMONGO_URL=mongodb://localhost:27017/",
+        "-sSPIDER_NAME=musicsearch",
+        "-sTASK_ID=001",
+        "-sJOB_ID=002",
+    ]
+)

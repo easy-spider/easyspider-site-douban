@@ -200,8 +200,6 @@ class MoviesearchSpider(scrapy.Spider):
                 describe_summarys[i] = " ".join(describe_summarys[i].split())
             item["describe"] += " ".join(describe_summarys)
 
-        # print("describe:", item['describe'])
-
         # 评价相关
         item["star"] = ""
         star = response.xpath(
