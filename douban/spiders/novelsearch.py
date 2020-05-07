@@ -2,11 +2,11 @@
 import scrapy
 
 
-# TODO finish novelsearch spider
+# TODO finish booksearch spider
 
 
-class NovelsearchSpider(scrapy.Spider):
-    name = "novelsearch"
+class BooksearchSpider(scrapy.Spider):
+    name = "booksearch"
     allowed_domains = ["https://book.douban.com/"]
     start_urls = ["http://https://book.douban.com//"]
 

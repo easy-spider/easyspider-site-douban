@@ -42,7 +42,7 @@ class MovieSearchItem(scrapy.Item):
     review = scrapy.Field()  # 长评数
 
 
-class NovelSearchItem(scrapy.Item):
+class BookSearchItem(scrapy.Item):
     # 基本信息
     name = scrapy.Field()  # 书名
     writer = scrapy.Field()  # 作者

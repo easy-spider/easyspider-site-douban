@@ -1,5 +1,5 @@
 # easyspider-site-douban
-Scrapy scripts for douban movies, novels and musics
+Scrapy scripts for douban movies, books and musics
 
 An essential part of easyspider: https://github.com/easy-spider
 
@@ -39,7 +39,7 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 
 ## TODO
 - Update Spider for Douban Top 250 movies, crawling more info.
-- Spider for novel search results
+- Spider for book search results
 - Spider for music search results
 - Support login
 - Support local log storage
