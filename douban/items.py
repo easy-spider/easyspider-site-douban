@@ -60,6 +60,7 @@ class BookSearchItem(scrapy.Item):
 
     # 介绍
     describe = scrapy.Field()  # 简介
+    writer_describe = scrapy.Field()  # 简介
 
     # 评价相关
     star = scrapy.Field()  # 星级

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from douban.items import MusicSearchItem
-from douban.custom_settings import MusicSearchSetting
+from douban.items import BookSearchItem
+from douban.custom_settings import BookSearchSetting
 from douban.useragent import user_agent_list
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,9 +12,10 @@ import random as rd
 
 
 class MusicsearchSpider(scrapy.Spider):
-    name = "musicsearch"
-    allowed_domains = ["music.douban.com"]
-    custom_settings = MusicSearchSetting
+    name = "booksearch"
+    allowed_domains = ["book.douban.com"]
+    # allowed_domains = ["https://book.douban.com/"]
+    custom_settings = BookSearchSetting
 
     def __init__(self, **kwargs):
         # selenium setting
@@ -38,7 +39,7 @@ class MusicsearchSpider(scrapy.Spider):
         self.key_word = kwargs["keyword"]
         self.start_pos = str((int(kwargs["page"]) - 1) * 15)
         self.search_result_url = (
-            "https://search.douban.com/music/subject_search?"
+            "https://search.douban.com/book/subject_search?"
             + "search_text="
             + self.key_word
             + "&start="
@@ -72,10 +73,9 @@ class MusicsearchSpider(scrapy.Spider):
             yield scrapy.Request(movie_page, callback=self.parse)
 
     def parse(self, response):
+        self.logger.debug("start crawl book page")
+        item = BookSearchItem()
         # 基本信息
-        self.logger.debug("start crawl music page")
-        item = MusicSearchItem()
-
         item["name"] = ""
         name = response.xpath('//*[@id="wrapper"]/h1/span/text()').extract()
         if name is not None:
@@ -100,13 +100,13 @@ class MusicsearchSpider(scrapy.Spider):
                 item[field[0]] = info[index]
 
         # 介绍
-        item["describe"] = ""
         describe_summarys = response.xpath(
-            "//*[@id='content']//span[@property='v:summary']/text()"
+            "//*[@id='content']//div[@id='link-report']//div[@class='intro'][1]//text()"
         ).extract()
         describe_hidden = response.xpath(
-            "//*[@id='content']//span[@class='all hidden']/text()"
+            "//*[@id='content']//div[@id='link-report']//span[@class='all hidden']//div[@class='intro']//text()"
         ).extract()
+        item["describe"] = ""
         describe = ""
         if len(describe_hidden) != 0:
             describe = describe_hidden
@@ -120,14 +120,27 @@ class MusicsearchSpider(scrapy.Spider):
             [describe[i] for i in range(0, len(describe)) if describe[i] != ""]
         )
 
-        # 曲目
-        item["tracks"] = ""
-        track_list = response.xpath('//div[@class="track-list"]//text()').extract()
-        for i in range(0, len(track_list)):
-            track_list[i] = "".join(track_list[i].split("\n"))
-            track_list[i] = "".join(track_list[i].split()) + "\n"
-        item["tracks"] = "".join(
-            [track_list[i] for i in range(0, len(track_list)) if track_list[i] != "\n"]
+        writer_describe_summarys = response.xpath(
+            "//*[@id='content']//div[@class='related_info']//div[contains(@class,'indent')][2]//div["
+            "@class='intro'][1]//text()"
+        ).extract()
+        writer_describe_hidden = response.xpath(
+            "//*[@id='content']//div[@class='related_info']//div[contains(@class,'indent')][2]//span[@class='all "
+            "hidden']//div[ "
+            "@class='intro']//text()"
+        ).extract()
+        item["writer_describe"] = ""
+        describe = ""
+        if len(writer_describe_hidden) != 0:
+            describe = writer_describe_hidden
+        elif writer_describe_summarys is not None:
+            describe = writer_describe_summarys
+        for i in range(0, len(describe)):
+            describe[i] = "".join(describe[i].split("\u3000\u3000"))
+            describe[i] = "".join(describe[i].split("\n"))
+            describe[i] = "".join(describe[i].split())
+        item["writer_describe"] += " ".join(
+            [describe[i] for i in range(0, len(describe)) if describe[i] != ""]
         )
 
         # 评价相关
@@ -140,14 +153,14 @@ class MusicsearchSpider(scrapy.Spider):
 
         item["evaluation"] = "0"
         evaluation = response.xpath(
-            "//*[@id='interest_sectl']/div[1]/div[2]/div/div[2]/a/span/text()"
+            '//*[@id="interest_sectl"]/div/div[2]/div/div[2]/span/a/span/text()'
         ).extract_first()
         if evaluation is not None:
             item["evaluation"] = evaluation
 
         item["comment"] = "0"
         comment = response.xpath(
-            '//*[@id="content"]/div/div[1]/div[3]/div[6]/h2/span/a//text()'
+            '//*[@id="content"]//div[@class="mod-hd"]//span[@class="pl"]/a/text()'
         ).extract_first()
         if comment is not None:
             item["comment"] = comment.split()[1]

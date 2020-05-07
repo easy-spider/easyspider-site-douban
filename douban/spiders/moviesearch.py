@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from douban.items import MovieSearchItem
-from douban.custom_settings import movieSearchSetting
+from douban.custom_settings import MovieSearchSetting
 from douban.useragent import user_agent_list
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,7 +18,7 @@ class MoviesearchSpider(scrapy.Spider):
     name = "moviesearch"
     allowed_domains = ["movie.douban.com"]
     # start_urls = ['http://movie.douban.com/']
-    custom_settings = movieSearchSetting
+    custom_settings = MovieSearchSetting
 
     def __init__(self, **kwargs):
         # selenium setting
@@ -183,22 +183,18 @@ class MoviesearchSpider(scrapy.Spider):
         describe_hidden = response.xpath(
             "//*[@id='content']//span[@class='all hidden']/text()"
         ).extract()
+        describe = ""
         if len(describe_hidden) != 0:
-            # print("describe_hidden not None", describe_hidden)
-            for i in range(0, len(describe_hidden)):
-                describe_hidden[i] = " ".join(describe_hidden[i].split("\u3000\u3000"))
-                describe_hidden[i] = " ".join(describe_hidden[i].split("\n"))
-                describe_hidden[i] = " ".join(describe_hidden[i].split())
-            item["describe"] += " ".join(describe_hidden)
+            describe = describe_hidden
         elif describe_summarys is not None:
-            # print("describe_summarys len", len(describe_summarys))
-            for i in range(0, len(describe_summarys)):
-                describe_summarys[i] = " ".join(
-                    describe_summarys[i].split("\u3000\u3000")
-                )
-                describe_summarys[i] = " ".join(describe_summarys[i].split("\n"))
-                describe_summarys[i] = " ".join(describe_summarys[i].split())
-            item["describe"] += " ".join(describe_summarys)
+            describe = describe_summarys
+        for i in range(0, len(describe)):
+            describe[i] = "".join(describe[i].split("\u3000\u3000"))
+            describe[i] = "".join(describe[i].split("\n"))
+            describe[i] = "".join(describe[i].split())
+        item["describe"] += " ".join(
+            [describe[i] for i in range(0, len(describe)) if describe[i] != ""]
+        )
 
         # 评价相关
         item["star"] = ""

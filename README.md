@@ -31,6 +31,8 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 - Crawl all kinds of movie info, like rankings, names, introductions, stars, comments, descriptions and so on
 - Spider for Douban Top 250 movies
 - Spider for movie search results
+- Spider for book search results
+- Spider for music search results
 - Pipeline to store resources into mongodb
 - Use user_agent middleware to change useragent dynamically
 - Design the argument interface for scrapyd
@@ -39,8 +41,6 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 
 ## TODO
 - Update Spider for Douban Top 250 movies, crawling more info.
-- Spider for book search results
-- Spider for music search results
 - Support login
 - Support local log storage
 - Fix bugs in Spider for movie search results
