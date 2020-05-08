@@ -3,7 +3,7 @@ Scrapy scripts for douban movies, books and musics
 
 An essential part of easyspider: https://github.com/easy-spider
 
-(Should Be) Generalized from easyspider-template: https://github.com/easy-spider/easyspider-template
+Generalized from easyspider-template: https://github.com/easy-spider/easyspider-template
 
 Deployed by easyspider-scheduler：https://github.com/easy-spider/easyspider-scheduler
 
@@ -33,15 +33,8 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 - Spider for movie search results
 - Spider for book search results
 - Spider for music search results
-- Pipeline to store resources into mongodb
-- Use user_agent middleware to change useragent dynamically
-- Design the argument interface for scrapyd
-- Use Selenium to deal with JS elements
-- Use custom_setting to different spiders
 
 ## TODO
-- Update Spider for Douban Top 250 movies, crawling more info.
-- Support login
-- Support local log storage
-- Fix bugs in Spider for movie search results
-- Extract template from this first Scrapy script
+- Support crawling for pictures and comments
+- update moviesearch spider
+
