@@ -61,6 +61,7 @@ DOWNLOADER_MIDDLEWARES = {
     "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
     # 用户代理中间件
     "douban.middlewares.user_agent": 543,
+    'douban.middlewares.RandomProxyMiddleware': 400,
 }
 
 # Enable or disable extensions

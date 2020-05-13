@@ -10,6 +10,7 @@ import random as rd
 from scrapy.http import HtmlResponse
 from logging import getLogger
 from douban.useragent import user_agent_list
+from douban.proxypool import get_random_proxy, proxy_test, target_url, proxy_pool
 import time
 
 
@@ -111,6 +112,20 @@ class DoubanDownloaderMiddleware(object):
         spider.logger.info("Spider opened: %s" % spider.name)
 
 
+class RandomProxyMiddleware(object):
+    def __init__(self):
+        # self.proxy = get_random_proxy()
+        self.proxy_pool = proxy_pool
+
+    # 动态设置ip代理
+    def process_request(self, request, spider):
+        request.meta["proxy"] = rd.choice(self.proxy_pool)  # 这个自定义函数返回一个随机代理ip：port
+        # request.meta["proxy"] = self.proxy
+        print("proxy ip", request.meta["proxy"])
+        # filename = 'proxytest'
+        # open(filename, 'w').write(proxy_test(target_url, request.meta["proxy"]))
+
+
 class SeleniumMiddleware:
     def __init__(self):
         self.logger = getLogger(__name__)
@@ -128,6 +143,7 @@ class SeleniumMiddleware:
             self.logger.debug("chrome is getting page")
             try:
                 spider.browser.get(request.url)
+                # print("selenium response: ", spider.browser.page_source)
                 # filename = 'response'
                 # open(filename, 'w').write(spider.browser.page_source)
             except Exception as e:

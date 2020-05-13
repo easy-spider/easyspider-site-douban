@@ -4,7 +4,7 @@ MovieSearchSetting = {
     "AUTOTHROTTLE_ENABLED": True,
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        # 'mySpider.middlewares.ProxiesMiddleware': 400,
+        'douban.middlewares.RandomProxyMiddleware': 400,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 543,
     },
@@ -20,7 +20,7 @@ MusicSearchSetting = {
     "AUTOTHROTTLE_ENABLED": True,
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        # 'mySpider.middlewares.ProxiesMiddleware': 400,
+        'douban.middlewares.RandomProxyMiddleware': 400,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 543,
     },
@@ -48,7 +48,7 @@ BookSearchSetting = {
     "AUTOTHROTTLE_ENABLED": True,
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        # 'mySpider.middlewares.ProxiesMiddleware': 400,
+        'douban.middlewares.RandomProxyMiddleware': 400,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 543,
     },
