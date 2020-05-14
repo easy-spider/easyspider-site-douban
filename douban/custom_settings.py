@@ -29,7 +29,7 @@ MusicSearchSetting = {
     "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        # 'douban.middlewares.RandomProxyMiddleware': 400,
+        "douban.middlewares.RandomProxyMiddleware": 400,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 500,
         "douban.middlewares.user_agent": 543,
@@ -62,7 +62,7 @@ BookSearchSetting = {
     "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        # 'douban.middlewares.RandomProxyMiddleware': 400,
+        "douban.middlewares.RandomProxyMiddleware": 400,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 500,
         "douban.middlewares.user_agent": 543,
