@@ -53,23 +53,62 @@ class MusicsearchSpider(scrapy.Spider):
         self.browser.quit()
 
     def start_requests(self):
-        # print(self.search_result_url)
+        self.logger.debug(f"start request {self.search_result_url}")
         return [
             scrapy.Request(
                 self.search_result_url,
                 meta={"usedSelenium": True, "dont_redirect": False},
-                callback=self.parse_search_result,
+                callback=self.verify_proxy_ip,
             )
         ]
 
+    def verify_proxy_ip(self, response):
+        self.logger.debug("verify response")
+        movie_pages = response.css("div[class*='sc-bZQynM']")
+        if len(movie_pages) > 0:
+            test_url = movie_pages[0].css("div.item-root a::attr(href)").extract_first()
+            self.logger.debug(f"test url {response.url}")
+            return [
+                scrapy.Request(
+                    test_url,
+                    meta={"test_timeout": True, "dont_redirect": True},
+                    callback=self.parse_test_result,
+                )
+            ]
+
+    def parse_test_result(self, response):
+        if response.xpath('//*[@id="wrapper"]/h1/span/text()').extract_first() is None:
+            self.logger.debug("Invalid Proxy IP")
+            return [
+                scrapy.Request(
+                    response.url,
+                    meta={
+                        "test_timeout": True,
+                        "invalid_Proxy": True,
+                        "dont_redirect": True,
+                    },
+                    callback=self.parse_test_result,
+                    dont_filter=True,
+                )
+            ]
+        else:
+            self.logger.debug("Verify proxy passed, start parse search result")
+            return [
+                scrapy.Request(
+                    self.search_result_url,
+                    meta={"usedSelenium": True, "dont_redirect": False},
+                    callback=self.parse_search_result,
+                    dont_filter=True,
+                )
+            ]
+
     def parse_search_result(self, response):
         movie_pages = response.css("div[class*='sc-bZQynM']")
-        # print("test: movie_pages size", len(movie_pages))
         for movie_page in movie_pages:
-            # print("movie page:", movie_page)
             movie_page = movie_page.css("div.item-root a::attr(href)").extract_first()
-            # print("movie page url:", movie_page)
-            yield scrapy.Request(movie_page, callback=self.parse)
+            yield scrapy.Request(
+                movie_page, meta={"dont_redirect": True}, callback=self.parse
+            )
 
     def parse(self, response):
         # 基本信息

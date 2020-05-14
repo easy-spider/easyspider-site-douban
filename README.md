@@ -8,19 +8,30 @@ Generalized from easyspider-template: https://github.com/easy-spider/easyspider-
 Deployed by easyspider-scheduler：https://github.com/easy-spider/easyspider-scheduler
 
 Use mongodb as database to store resources
+
+Use Proxy pool to deal with more anti crawler situation(optional)
+
+## Branch
+- master branch is developed full function, including Proxy pool
+- stable-without-proxypool branch is uicker, more stable without proxy pool technique
+
 ## Environment
+- Ubuntu 16.04 / Other Linux release version
 - Python 3.7.0 (anaconda3)
 - Scrapy 2.0.1
 - selenium 3.141.0
 - scrapyd-client  1.1.0 
 - pydispatcher	2.0.5
 - pymongo 3.10.1
-- Google Chrome	80.0.3987.122 & chromediver(same version)
+- Google Chrome	80.0.3987.122 & chromediver (Same Version)
+- Every environment request for https://github.com/Python3WebSpider/ProxyPool (For Proxy pool)
 
 ## Run And Deployment
-*It is not recommanded to run this repo respectively!*
+*** **It is not recommanded to run this repo respectively!** ***<br>
+*** **If running in proxy pool mode, member to start Python3WebSpider/ProxyPool first** ***
 - Run: <br>
 > python run.py <br><br>
+source env (For ProxyPool) <br><br>
 This will start to crawl resources from the website, according to the sipder and other arguments written in run.py. 
 
 - Deployment: 

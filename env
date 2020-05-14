@@ -1,0 +1,7 @@
+export APP_ENV=prod
+export APP_DEBUG=false
+export REDIS_HOST='localhost'
+export REDIS_PORT=6379
+export REDIS_PASSWORD=''
+export TEST_URL=https://www.douban.com
+export REDIS_KEY=proxies:douban

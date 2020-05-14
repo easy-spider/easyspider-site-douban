@@ -5,6 +5,7 @@ douban/custom_settings.py
 douban/items.py
 douban/middlewares.py
 douban/pipelines.py
+douban/proxypool.py
 douban/settings.py
 douban/useragent.py
 douban/spiders/__init__.py

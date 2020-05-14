@@ -49,8 +49,8 @@ class BookSearchItem(scrapy.Item):
     publisher = scrapy.Field()  # 出版社
     producer = scrapy.Field()  # 出品方
     subhead = scrapy.Field()  # 副标题
-    ori_name = scrapy.Field()  # 原名
-    interpreter = scrapy.Field()  # 译者
+    ori_name = scrapy.Field()  # 原名?
+    interpreter = scrapy.Field()  # 译者?
     year = scrapy.Field()  # 出版年份
     pages = scrapy.Field()  # 页数
     price = scrapy.Field()  # 定价
