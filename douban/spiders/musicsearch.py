@@ -107,7 +107,10 @@ class MusicsearchSpider(scrapy.Spider):
         for movie_page in movie_pages:
             movie_page = movie_page.css("div.item-root a::attr(href)").extract_first()
             yield scrapy.Request(
-                movie_page, meta={"dont_redirect": True}, callback=self.parse
+                movie_page,
+                meta={"dont_redirect": True},
+                callback=self.parse,
+                dont_filter=True,
             )
 
     def parse(self, response):

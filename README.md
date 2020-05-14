@@ -32,13 +32,16 @@ Use Proxy pool to deal with more anti crawler situation (optional)
 *** **If running in proxy pool mode, member to start Python3WebSpider/ProxyPool previously, and before that you need to "source env" first (For ProxyPool)** ***
 
 - Run: <br>
-> python run.py <br><br>
+> python run.py [spider_name] [keyword] [pages] <br><br>
 This will start to crawl resources from the website, according to the sipder and other arguments written in run.py. 
 
 - Deployment: 
 > ./build.sh <br><br>
 This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 
+- Testbench
+> python testbench.py <br><br>
+This will start a testbench according to the arguments inside the script
 ## What Is Available
 - Crawl all kinds of movie info, like rankings, names, introductions, stars, comments, descriptions and so on
 - Spider for Douban Top 250 movies
