@@ -1,12 +1,17 @@
 MovieSearchSetting = {
     # 'LOG_LEVEL': 'INFO',
-    "DOWNLOAD_DELAY": 3,
-    "AUTOTHROTTLE_ENABLED": True,
+    "DOWNLOAD_DELAY": 1,  # 延时最低为2s
+    "AUTOTHROTTLE_ENABLED": True,  # 启动[自动限速]
+    "AUTOTHROTTLE_DEBUG": True,  # 开启[自动限速]的debug
+    "AUTOTHROTTLE_MAX_DELAY": 10,  # 设置最大下载延时
+    "DOWNLOAD_TIMEOUT": 15,
+    "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        'douban.middlewares.RandomProxyMiddleware': 400,
+        "douban.middlewares.RandomProxyMiddleware": 400,
         # SeleniumMiddleware 中间件
-        "douban.middlewares.SeleniumMiddleware": 543,
+        "douban.middlewares.SeleniumMiddleware": 500,
+        "douban.middlewares.user_agent": 543,
     },
     # "ITEM_PIPELINES": {"douban.pipelines.MongodbPipeline": 300},
     # ----------- selenium参数配置 -------------
@@ -16,13 +21,18 @@ MovieSearchSetting = {
 
 MusicSearchSetting = {
     # 'LOG_LEVEL': 'INFO',
-    "DOWNLOAD_DELAY": 3,
-    "AUTOTHROTTLE_ENABLED": True,
+    "DOWNLOAD_DELAY": 1,  # 延时最低为2s
+    "AUTOTHROTTLE_ENABLED": True,  # 启动[自动限速]
+    "AUTOTHROTTLE_DEBUG": True,  # 开启[自动限速]的debug
+    "AUTOTHROTTLE_MAX_DELAY": 10,  # 设置最大下载延时
+    "DOWNLOAD_TIMEOUT": 15,
+    "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        'douban.middlewares.RandomProxyMiddleware': 400,
+        # 'douban.middlewares.RandomProxyMiddleware': 400,
         # SeleniumMiddleware 中间件
-        "douban.middlewares.SeleniumMiddleware": 543,
+        "douban.middlewares.SeleniumMiddleware": 500,
+        "douban.middlewares.user_agent": 543,
     },
     # "ITEM_PIPELINES": {"douban.pipelines.MongodbPipeline": 300},
     # ----------- selenium参数配置 -------------
@@ -44,13 +54,18 @@ MusicSearchSetting = {
 
 BookSearchSetting = {
     # 'LOG_LEVEL': 'INFO',
-    "DOWNLOAD_DELAY": 3,
-    "AUTOTHROTTLE_ENABLED": True,
+    "DOWNLOAD_DELAY": 1,  # 延时最低为2s
+    "AUTOTHROTTLE_ENABLED": True,  # 启动[自动限速]
+    "AUTOTHROTTLE_DEBUG": True,  # 开启[自动限速]的debug
+    "AUTOTHROTTLE_MAX_DELAY": 10,  # 设置最大下载延时
+    "DOWNLOAD_TIMEOUT": 15,
+    "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        'douban.middlewares.RandomProxyMiddleware': 400,
+        # 'douban.middlewares.RandomProxyMiddleware': 400,
         # SeleniumMiddleware 中间件
-        "douban.middlewares.SeleniumMiddleware": 543,
+        "douban.middlewares.SeleniumMiddleware": 500,
+        "douban.middlewares.user_agent": 543,
     },
     # "ITEM_PIPELINES": {"douban.pipelines.MongodbPipeline": 300},
     # ----------- selenium参数配置 -------------

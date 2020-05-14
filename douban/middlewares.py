@@ -5,12 +5,13 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import requests
 from scrapy import signals
 import random as rd
 from scrapy.http import HtmlResponse
 from logging import getLogger
 from douban.useragent import user_agent_list
-from douban.proxypool import get_random_proxy, proxy_test, target_url, proxy_pool
+from douban.proxypool import get_random_proxy
 import time
 
 
@@ -114,16 +115,33 @@ class DoubanDownloaderMiddleware(object):
 
 class RandomProxyMiddleware(object):
     def __init__(self):
-        # self.proxy = get_random_proxy()
-        self.proxy_pool = proxy_pool
+        self.logger = getLogger(__name__)
+        self.proxy = get_random_proxy()
 
     # 动态设置ip代理
     def process_request(self, request, spider):
-        request.meta["proxy"] = rd.choice(self.proxy_pool)  # 这个自定义函数返回一个随机代理ip：port
-        # request.meta["proxy"] = self.proxy
-        print("proxy ip", request.meta["proxy"])
-        # filename = 'proxytest'
-        # open(filename, 'w').write(proxy_test(target_url, request.meta["proxy"]))
+        if request.meta.get("invalid_Proxy", False):
+            self.proxy = get_random_proxy()
+            self.logger.debug(f"Switch Proxy IP {self.proxy}")
+        if request.meta.get("test_timeout", False):
+            while True:
+                try:
+                    self.logger.debug(f"Try catch timeout proxy {self.proxy}")
+                    proxy = {
+                        "http": f"http://{self.proxy}",
+                        "https": f"https://{self.proxy}",
+                    }
+                    requests.get(request.url, proxies=proxy, timeout=15)
+                except Exception as e:
+                    self.logger.debug(f"Exception is {e}")
+                    self.proxy = get_random_proxy()
+                else:
+                    self.logger.debug("Not catching any Exception")
+                    break
+        request.meta["proxy"] = self.proxy
+        self.logger.debug(
+            f"ProxyMiddleware: process request url {request.url}, proxy ip {request.meta['proxy']}"
+        )
 
 
 class SeleniumMiddleware:
@@ -148,7 +166,7 @@ class SeleniumMiddleware:
                 # open(filename, 'w').write(spider.browser.page_source)
             except Exception as e:
                 self.logger.debug(f"chrome getting page error, Exception = {e}")
-                print(f"chrome getting page error, Exception = {e}")
+                # print(f"chrome getting page error, Exception = {e}")
                 return HtmlResponse(url=request.url, status=500, request=request)
             else:
                 time.sleep(3)
@@ -168,3 +186,4 @@ class user_agent(object):
 
     def process_request(self, request, spider):
         request.headers["USER_AGENT"] = rd.choice(self.user_agent_list)
+        # print("request url", request.url, ", USER_AGENT", request.headers["USER_AGENT"])

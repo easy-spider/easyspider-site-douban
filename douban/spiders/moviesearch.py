@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import requests
 from douban.items import MovieSearchItem
 from douban.custom_settings import MovieSearchSetting
 from douban.useragent import user_agent_list
@@ -17,7 +18,6 @@ import random as rd
 class MoviesearchSpider(scrapy.Spider):
     name = "moviesearch"
     allowed_domains = ["movie.douban.com"]
-    # start_urls = ['http://movie.douban.com/']
     custom_settings = MovieSearchSetting
 
     def __init__(self, **kwargs):
@@ -56,27 +56,69 @@ class MoviesearchSpider(scrapy.Spider):
         self.browser.quit()
 
     def start_requests(self):
-        # print(self.search_result_url)
+        self.logger.debug(f"start request {self.search_result_url}")
         return [
             scrapy.Request(
                 self.search_result_url,
                 meta={"usedSelenium": True, "dont_redirect": False},
-                callback=self.parse_search_result,
+                callback=self.verify_proxy_ip,
             )
         ]
 
+    def verify_proxy_ip(self, response):
+        self.logger.debug("verify response")
+        movie_pages = response.css("div[class*='sc-bZQynM']")
+        if len(movie_pages) > 0:
+            test_url = movie_pages[0].css("div.item-root a::attr(href)").extract_first()
+            self.logger.debug(f"test url {response.url}")
+            return [
+                scrapy.Request(
+                    test_url,
+                    meta={"test_timeout": True, "dont_redirect": True},
+                    callback=self.parse_test_result,
+                )
+            ]
+
+    def parse_test_result(self, response):
+        if (
+            response.xpath("//*[@id='content']/h1/span[1]/text()").extract_first()
+            is None
+        ):
+            self.logger.debug("Invalid Proxy IP")
+            return [
+                scrapy.Request(
+                    response.url,
+                    meta={
+                        "test_timeout": True,
+                        "invalid_Proxy": True,
+                        "dont_redirect": True,
+                    },
+                    callback=self.parse_test_result,
+                    dont_filter=True,
+                )
+            ]
+        else:
+            self.logger.debug("Verify proxy passed, start parse search result")
+            return [
+                scrapy.Request(
+                    self.search_result_url,
+                    meta={"usedSelenium": True, "dont_redirect": False},
+                    callback=self.parse_search_result,
+                    dont_filter=True,
+                )
+            ]
+
     def parse_search_result(self, response):
         movie_pages = response.css("div[class*='sc-bZQynM']")
-        # print("test: movie_pages size", len(movie_pages))
         for movie_page in movie_pages:
-            # print("movie page:", movie_page)
             movie_page = movie_page.css("div.item-root a::attr(href)").extract_first()
-            # print("movie page url:", movie_page)
-            yield scrapy.Request(movie_page, callback=self.parse)
+            yield scrapy.Request(
+                movie_page, meta={"dont_redirect": True}, callback=self.parse
+            )
 
     def parse(self, response):
         # 基本信息
-        self.logger.debug("start crawl movie page")
+        self.logger.debug(f"start crawl movie page {response.url}")
         item = MovieSearchItem()
 
         item["name"] = ""
@@ -121,7 +163,6 @@ class MoviesearchSpider(scrapy.Spider):
         item["language"] = ""
         item["alias"] = ""
         info_text = response.xpath("//*[@id='info']/text()").extract()
-        # print("info_text_1", info_text)
         info_text = [
             info_text[i]
             for i in range(0, len(info_text))
@@ -129,7 +170,7 @@ class MoviesearchSpider(scrapy.Spider):
             and info_text[i] != " / "
             and info_text[i] != " "
         ]
-        # print("info_text_2", info_text)
+
         info_text_set = []
         index = 0
         while len(info_text) > 0:
@@ -162,20 +203,7 @@ class MoviesearchSpider(scrapy.Spider):
         if imbd_link is not None:
             item["imdb_link"] = "https://www.imdb.com/title/" + imbd_link
 
-        # print("name:", item['name'])
-        # print("year:", item['year'])
-        # print("director:", item['director'])
-        # print("scriptwriter:", item['scriptwriter'])
-        # print("leading_role:", item['leading_role'])
-        # print("style:", item['style'])
-        # print("country:", item['country'])
-        # print("language:", item['language'])
-        # print("alias:", item['alias'])
-        # print("film_length:", item['film_length'])
-        # print("imdb_link", item['imdb_link'])
-
         # 介绍
-        # //*[@id="link-report"]/span[2]/text()[2]
         item["describe"] = ""
         describe_summarys = response.xpath(
             "//*[@id='content']//span[@property='v:summary']/text()"
@@ -225,10 +253,5 @@ class MoviesearchSpider(scrapy.Spider):
         ).extract_first()
         if review is not None:
             item["review"] = review.split()[1]
-
-        # print("star:", item['star'])
-        # print("evaluation:", item['evaluation'])
-        # print("comment:", item['comment'])
-        # print("review:", item['review'])
 
         yield item
