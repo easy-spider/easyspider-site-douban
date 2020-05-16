@@ -10,6 +10,7 @@
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 import random as rd
+import datetime
 from douban.useragent import user_agent_list
 
 BOT_NAME = "douban"

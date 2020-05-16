@@ -131,7 +131,7 @@ class RandomProxyMiddleware(object):
                         "http": f"http://{self.proxy}",
                         "https": f"https://{self.proxy}",
                     }
-                    requests.get(request.url, proxies=proxy, timeout=15)
+                    requests.get(request.url, proxies=proxy, timeout=5)
                 except Exception as e:
                     self.logger.debug(f"Exception is {e}")
                     self.proxy = get_random_proxy()
@@ -166,7 +166,6 @@ class SeleniumMiddleware:
                 # open(filename, 'w').write(spider.browser.page_source)
             except Exception as e:
                 self.logger.debug(f"chrome getting page error, Exception = {e}")
-                # print(f"chrome getting page error, Exception = {e}")
                 return HtmlResponse(url=request.url, status=500, request=request)
             else:
                 time.sleep(3)

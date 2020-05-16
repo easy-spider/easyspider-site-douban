@@ -23,8 +23,9 @@ Use Proxy pool to deal with more anti crawler situation (optional)
 - scrapyd-client  1.1.0 
 - pydispatcher	2.0.5
 - pymongo 3.10.1
-- Google Chrome	80.0.3987.122 & chromediver (Same Version)
+- Google Chrome	80.0.3987.122 & chromediver (same version)
 - Every environment request needed for https://github.com/Python3WebSpider/ProxyPool (only for proxy pool)
+- Use "pip3 install -r requirements.txt" to quickly install environment(not including Chrome & Chromedriver)
 
 
 ## Run And Deployment
@@ -32,7 +33,7 @@ Use Proxy pool to deal with more anti crawler situation (optional)
 *** **If running in proxy pool mode, member to start Python3WebSpider/ProxyPool previously, and before that you need to "source env" first (For ProxyPool)** ***
 
 - Run: <br>
-> python run.py [spider_name] [keyword] [pages] <br><br>
+> ./run.py [spider_name] [keyword] [pages] <br><br>
 This will start to crawl resources from the website, according to the sipder and other arguments written in run.py. 
 
 - Deployment: 
@@ -40,15 +41,14 @@ This will start to crawl resources from the website, according to the sipder and
 This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 
 - Testbench
-> python testbench.py <br><br>
+> ./testbench.py <br><br>
 This will start a testbench according to the arguments inside the script
+>
 ## What Is Available
-- Crawl all kinds of movie info, like rankings, names, introductions, stars, comments, descriptions and so on
-- Spider for Douban Top 250 movies
+- Crawl all kinds of info, like rankings, names, introductions, stars, comments, descriptions and so on
 - Spider for movie search results
 - Spider for book search results
 - Spider for music search results
 
 ## TODO
 - Support crawling for pictures and comments
-- update moviesearch spider

@@ -1,43 +1,50 @@
+import datetime
+
+
+# to_day = datetime.datetime.now()
+
 MovieSearchSetting = {
-    # 'LOG_LEVEL': 'INFO',
-    "DOWNLOAD_DELAY": 1,  # 延时最低为2s
+    # "LOG_LEVEL": 'DEBUG',
+    # "LOG_FILE": f'log/moviesearch_{to_day.year}_{to_day.month}_{to_day.day}.log',
+    "DOWNLOAD_DELAY": 0.5,  # 最低延时
     "AUTOTHROTTLE_ENABLED": True,  # 启动[自动限速]
     "AUTOTHROTTLE_DEBUG": True,  # 开启[自动限速]的debug
-    "AUTOTHROTTLE_MAX_DELAY": 10,  # 设置最大下载延时
-    "DOWNLOAD_TIMEOUT": 15,
+    "AUTOTHROTTLE_MAX_DELAY": 5,  # 设置最大下载延时
+    "DOWNLOAD_TIMEOUT": 5,
     "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        "douban.middlewares.RandomProxyMiddleware": 400,
+        "douban.middlewares.RandomProxyMiddleware": 440,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 500,
         "douban.middlewares.user_agent": 543,
     },
     # "ITEM_PIPELINES": {"douban.pipelines.MongodbPipeline": 300},
     # ----------- selenium参数配置 -------------
-    "SELENIUM_PAGE_TIMEOUT": 25,  # selenium浏览器的页面请求超时时间，单位秒
-    "SELENIUM_ELEMENT_TIMEOUT": 25,  # selenium浏览器的元素请求超时时间，单位秒
+    "SELENIUM_PAGE_TIMEOUT": 15,  # selenium浏览器的页面请求超时时间，单位秒
+    "SELENIUM_ELEMENT_TIMEOUT": 15,  # selenium浏览器的元素请求超时时间，单位秒
 }
 
 MusicSearchSetting = {
-    # 'LOG_LEVEL': 'INFO',
-    "DOWNLOAD_DELAY": 1,  # 延时最低为2s
+    # "LOG_LEVEL": 'DEBUG',
+    # "LOG_FILE": f'log/moviesearch_{to_day.year}_{to_day.month}_{to_day.day}.log',
+    "DOWNLOAD_DELAY": 0.5,  # 最低延时
     "AUTOTHROTTLE_ENABLED": True,  # 启动[自动限速]
     "AUTOTHROTTLE_DEBUG": True,  # 开启[自动限速]的debug
-    "AUTOTHROTTLE_MAX_DELAY": 10,  # 设置最大下载延时
-    "DOWNLOAD_TIMEOUT": 15,
+    "AUTOTHROTTLE_MAX_DELAY": 5,  # 设置最大下载延时
+    "DOWNLOAD_TIMEOUT": 5,
     "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        "douban.middlewares.RandomProxyMiddleware": 400,
+        "douban.middlewares.RandomProxyMiddleware": 440,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 500,
         "douban.middlewares.user_agent": 543,
     },
     # "ITEM_PIPELINES": {"douban.pipelines.MongodbPipeline": 300},
     # ----------- selenium参数配置 -------------
-    "SELENIUM_PAGE_TIMEOUT": 25,  # selenium浏览器的页面请求超时时间，单位秒
-    "SELENIUM_ELEMENT_TIMEOUT": 25,  # selenium浏览器的元素请求超时时间，单位秒
+    "SELENIUM_PAGE_TIMEOUT": 15,  # selenium浏览器的页面请求超时时间，单位秒
+    "SELENIUM_ELEMENT_TIMEOUT": 15,  # selenium浏览器的元素请求超时时间，单位秒
     "FIELD": [
         ["alias", "又名"],
         ["actor", "表演者"],
@@ -53,24 +60,25 @@ MusicSearchSetting = {
 }
 
 BookSearchSetting = {
-    # 'LOG_LEVEL': 'INFO',
-    "DOWNLOAD_DELAY": 1,  # 延时最低为2s
+    # "LOG_LEVEL": 'DEBUG',
+    # "LOG_FILE": f'log/moviesearch_{to_day.year}_{to_day.month}_{to_day.day}.log',
+    "DOWNLOAD_DELAY": 0.5,  # 最低延时
     "AUTOTHROTTLE_ENABLED": True,  # 启动[自动限速]
     "AUTOTHROTTLE_DEBUG": True,  # 开启[自动限速]的debug
-    "AUTOTHROTTLE_MAX_DELAY": 10,  # 设置最大下载延时
-    "DOWNLOAD_TIMEOUT": 15,
+    "AUTOTHROTTLE_MAX_DELAY": 5,  # 设置最大下载延时
+    "DOWNLOAD_TIMEOUT": 5,
     "CONCURRENT_REQUESTS_PER_DOMAIN": 4,  # 限制对该网站的并发请求数
     "DOWNLOADER_MIDDLEWARES": {
         # 代理中间件
-        "douban.middlewares.RandomProxyMiddleware": 400,
+        "douban.middlewares.RandomProxyMiddleware": 440,
         # SeleniumMiddleware 中间件
         "douban.middlewares.SeleniumMiddleware": 500,
         "douban.middlewares.user_agent": 543,
     },
     # "ITEM_PIPELINES": {"douban.pipelines.MongodbPipeline": 300},
     # ----------- selenium参数配置 -------------
-    "SELENIUM_PAGE_TIMEOUT": 25,  # selenium浏览器的页面请求超时时间，单位秒
-    "SELENIUM_ELEMENT_TIMEOUT": 25,  # selenium浏览器的元素请求超时时间，单位秒
+    "SELENIUM_PAGE_TIMEOUT": 15,  # selenium浏览器的页面请求超时时间，单位秒
+    "SELENIUM_ELEMENT_TIMEOUT": 15,  # selenium浏览器的元素请求超时时间，单位秒
     "FIELD": [
         ["writer", "作者"],
         ["publisher", "出版社"],

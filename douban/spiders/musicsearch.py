@@ -18,21 +18,18 @@ class MusicsearchSpider(scrapy.Spider):
 
     def __init__(self, **kwargs):
         # selenium setting
+        self.field = self.custom_settings["FIELD"]
         self.page_timeout = self.custom_settings["SELENIUM_PAGE_TIMEOUT"]
         self.element_timeout = self.custom_settings["SELENIUM_ELEMENT_TIMEOUT"]
-        self.field = self.custom_settings["FIELD"]
-        user_agent = rd.choice(user_agent_list)
-        options = Options()
-        options.add_argument("--headless")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-extensions")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument(f"--user-agent={user_agent}")
-        self.browser = webdriver.Chrome(chrome_options=options)
-        self.browser.set_page_load_timeout(self.page_timeout)  # 页面加载超时时间
-        self.wait = WebDriverWait(self.browser, self.element_timeout)  # 指定元素加载超时时间
+        self.chrome_options = Options()
+        self.chrome_options.add_argument("--headless")
+        self.chrome_options.add_argument("--disable-infobars")
+        self.chrome_options.add_argument("--no-sandbox")
+        self.chrome_options.add_argument("--disable-extensions")
+        self.chrome_options.add_argument("--disable-gpu")
+        self.chrome_options.add_argument("--disable-dev-shm-usage")
+        self.chrome_options.add_argument(f"--user-agent={rd.choice(user_agent_list)}")
+        self.browser, self.wait = None, None
 
         # url from arguments
         self.key_word = kwargs["keyword"]
@@ -53,31 +50,21 @@ class MusicsearchSpider(scrapy.Spider):
         self.browser.quit()
 
     def start_requests(self):
-        self.logger.debug(f"start request {self.search_result_url}")
+        self.logger.debug("Find an available proxy ip")
         return [
             scrapy.Request(
                 self.search_result_url,
-                meta={"usedSelenium": True, "dont_redirect": False},
-                callback=self.verify_proxy_ip,
+                meta={"test_timeout": True, "dont_redirect": True},
+                callback=self.parse_test_result,
             )
         ]
 
-    def verify_proxy_ip(self, response):
-        self.logger.debug("verify response")
-        movie_pages = response.css("div[class*='sc-bZQynM']")
-        if len(movie_pages) > 0:
-            test_url = movie_pages[0].css("div.item-root a::attr(href)").extract_first()
-            self.logger.debug(f"test url {response.url}")
-            return [
-                scrapy.Request(
-                    test_url,
-                    meta={"test_timeout": True, "dont_redirect": True},
-                    callback=self.parse_test_result,
-                )
-            ]
-
     def parse_test_result(self, response):
-        if response.xpath('//*[@id="wrapper"]/h1/span/text()').extract_first() is None:
+        result = response.xpath(
+            '//a[@href="https://music.douban.com"]/text()'
+        ).extract_first()
+        self.logger.debug(f"parse verify response {response.url}, get text {result}")
+        if result is None:
             self.logger.debug("Invalid Proxy IP")
             return [
                 scrapy.Request(
@@ -92,7 +79,16 @@ class MusicsearchSpider(scrapy.Spider):
                 )
             ]
         else:
-            self.logger.debug("Verify proxy passed, start parse search result")
+            self.logger.debug("Verify proxy passed, start search request")
+            self.logger.debug(
+                f"Apply proxy and start chrome, proxy https:{response.meta['proxy']}"
+            )
+            self.chrome_options.add_argument(
+                "--proxy=" + "https:" + response.meta["proxy"]
+            )
+            self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
+            self.browser.set_page_load_timeout(self.page_timeout)  # 页面加载超时时间
+            self.wait = WebDriverWait(self.browser, self.element_timeout)  # 指定元素加载超时时间
             return [
                 scrapy.Request(
                     self.search_result_url,
