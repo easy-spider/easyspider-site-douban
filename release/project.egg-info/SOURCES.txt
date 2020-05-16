@@ -11,7 +11,6 @@ douban/useragent.py
 douban/spiders/__init__.py
 douban/spiders/booksearch.py
 douban/spiders/moviesearch.py
-douban/spiders/movietop250.py
 douban/spiders/musicsearch.py
 project.egg-info/PKG-INFO
 project.egg-info/SOURCES.txt
