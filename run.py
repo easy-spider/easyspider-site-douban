@@ -58,7 +58,7 @@ if __name__ == "__main__":
                 f"-akeyword={sys.argv[2]}",
                 f"-apage={sys.argv[3]}",
                 "-sMONGO_URL=mongodb://localhost:27017/",
-                "-sSPIDER_NAME=moviesearch",
+                f"-sSPIDER_NAME={sys.argv[1]}",
                 "-sTASK_ID=001",
                 "-sJOB_ID=002",
             ]
