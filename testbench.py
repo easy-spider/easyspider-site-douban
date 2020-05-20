@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from scrapy.cmdline import execute
 import time
 import datetime

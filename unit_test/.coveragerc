@@ -1,0 +1,6 @@
+[run]
+omit =
+    ../douban/settings.py
+    ../run.py
+    ../testbench.py
+    */__init__.py

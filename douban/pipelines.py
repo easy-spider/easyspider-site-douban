@@ -32,7 +32,7 @@ class MongodbPipeline(object):
     def open_spider(self, spider):
         pass
 
-    def process_item(self, item, spider):
+    def process_item(self, item, spider=None):
         data = dict(item)
         self.db[self.mongo_col].insert(data)
         return item

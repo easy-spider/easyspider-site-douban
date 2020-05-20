@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from scrapy.cmdline import execute
 import sys
 

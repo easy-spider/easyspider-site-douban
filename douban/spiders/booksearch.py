@@ -11,7 +11,7 @@ from scrapy import signals
 import random as rd
 
 
-class MusicsearchSpider(scrapy.Spider):
+class BooksearchSpider(scrapy.Spider):
     name = "booksearch"
     allowed_domains = ["book.douban.com"]
     custom_settings = BookSearchSetting
