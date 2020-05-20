@@ -23,7 +23,7 @@ Use Proxy pool to deal with more anti crawler situation (optional)
 - scrapyd-client  1.1.0 
 - pydispatcher	2.0.5
 - pymongo 3.10.1
-- coverage==5.0
+- coverage 5.0
 - Google Chrome	80.0.3987.122 & chromediver (same version)
 - Every environment request needed for https://github.com/Python3WebSpider/ProxyPool (only for proxy pool)
 - Use "pip3 install -r requirements.txt" to quickly install environment(not including Chrome & Chromedriver)
@@ -43,14 +43,13 @@ This will generate an '*.egg' in folder ./release, what is for scrapyd to deploy
 
 - unittest
 > cd unit_test <br><br>
-  ./testbench.py <br><br>
+  ./unittest.sh <br><br>
 This will start a unittest and generate report and html.(Proxypool required)
->
->
+
 - Testbench
 > ./testbench.py <br><br>
 This will start a testbench according to the arguments inside the script
->
+
 ## What Is Available
 - Crawl all kinds of info, like rankings, names, introductions, stars, comments, descriptions and so on
 - Spider for movie search results
