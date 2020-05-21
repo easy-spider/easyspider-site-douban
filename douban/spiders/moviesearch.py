@@ -11,12 +11,9 @@ from scrapy import signals
 import random as rd
 
 
-# TODO Fix crawl TV series
-
-
 class MoviesearchSpider(scrapy.Spider):
     name = "moviesearch"
-    allowed_domains = ["http://movie.douban.com"]
+    allowed_domains = ["movie.douban.com"]
     custom_settings = MovieSearchSetting
 
     def __init__(self, **kwargs):

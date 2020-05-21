@@ -130,7 +130,7 @@ class MusicsearchSpider(scrapy.Spider):
         for field in self.field:
             item[field[0]] = ""
             index = -1
-            for i in range(0, len(info)):
+            for i in range(0, len(info), 2):
                 if field[1] in info[i]:
                     index = i + 1
                     break
