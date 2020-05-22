@@ -12,6 +12,18 @@ MovieSearchSetting = {
     # ----------- selenium参数配置 -------------
     "SELENIUM_PAGE_TIMEOUT": 25,  # selenium浏览器的页面请求超时时间，单位秒
     "SELENIUM_ELEMENT_TIMEOUT": 25,  # selenium浏览器的元素请求超时时间，单位秒
+    "FIELD": [
+        ["director", "导演"],
+        ["scriptwriter", "编剧"],
+        ["leading_role", "主演"],
+        ["style", "类型"],
+        ["country", "制片国家/地区"],
+        ["language", "语言"],
+        ["release_time", "上映日期"],
+        ["film_length", "片长"],
+        ["alias", "又名"],
+        ["imdb_link", "IMDb链接"],
+    ],
 }
 
 MusicSearchSetting = {

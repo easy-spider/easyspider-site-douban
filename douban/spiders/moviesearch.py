@@ -22,6 +22,7 @@ class MoviesearchSpider(scrapy.Spider):
 
     def __init__(self, **kwargs):
         # selenium setting
+        self.field = self.custom_settings["FIELD"]
         self.page_timeout = self.custom_settings["SELENIUM_PAGE_TIMEOUT"]
         self.element_timeout = self.custom_settings["SELENIUM_ELEMENT_TIMEOUT"]
         user_agent = rd.choice(user_agent_list)
@@ -89,93 +90,29 @@ class MoviesearchSpider(scrapy.Spider):
         if year is not None:
             item["year"] = year[1 : len(year) - 1]
 
-        item["director"] = ""
-        director = response.xpath(
-            "//*[@id='info']/span[1]/span[2]/a/text()"
-        ).extract_first()
-        if director is not None:
-            item["director"] = director
-
-        item["scriptwriter"] = ""
-        scriptwriters = response.xpath(
-            "//*[@id='info']/span[2]/span[2]//a[@href]/text()"
-        ).extract()
-        for writer in scriptwriters:
-            item["scriptwriter"] += writer + " "
-
-        item["leading_role"] = ""
-        leading_roles = response.xpath(
-            "//*[@id='info']/span[3]/span[2]//a[@rel='v:starring']/text()"
-        ).extract()
-        for role in leading_roles:
-            item["leading_role"] += role + " "
-
-        item["style"] = ""
-        styles = response.xpath(
-            "//*[@id='info']/span[@property='v:genre']/text()"
-        ).extract()
-        for s in styles:
-            item["style"] += s + " "
-
-        item["country"] = ""
-        item["language"] = ""
-        item["alias"] = ""
-        info_text = response.xpath("//*[@id='info']/text()").extract()
-        # print("info_text_1", info_text)
-        info_text = [
-            info_text[i]
-            for i in range(0, len(info_text))
-            if "\n" not in info_text[i]
-            and info_text[i] != " / "
-            and info_text[i] != " "
+        info = response.xpath('//div[@id="info"]//text()').extract()
+        for i in range(0, len(info)):
+            info[i] = "".join(info[i].split("\n"))
+            info[i] = "".join(info[i].split())
+        info = [
+            info[i] for i in range(0, len(info)) if info[i] != "" and info[i] != ":"
         ]
-        # print("info_text_2", info_text)
-        info_text_set = []
-        index = 0
-        while len(info_text) > 0:
-            info_text_set.append("")
-            element = info_text.pop(0)
-            for s in element.split(" / "):
-                info_text_set[index] += s + " "
-            index += 1
-        if len(info_text_set[0]) > 1:
-            item["country"] = info_text_set[0][1:]
-        if len(info_text_set[1]) > 1:
-            item["language"] = info_text_set[1][1:]
-        for i in range(2, len(info_text_set)):
-            if "分钟" not in info_text_set[i]:
-                if len(info_text_set[i]) > 1:
-                    item["alias"] = info_text_set[i][1:]
-                break
 
-        item["film_length"] = ""
-        film_length = response.xpath(
-            "//*[@id='info']/span[@property='v:runtime']/text()"
-        ).extract_first()
-        if film_length is not None:
-            item["film_length"] = film_length
-
-        item["imdb_link"] = ""
-        imbd_link = response.css(
-            '#info > a[href^="https://www.imdb.com/title/"]::text'
-        ).extract_first()
-        if imbd_link is not None:
-            item["imdb_link"] = "https://www.imdb.com/title/" + imbd_link
-
-        # print("name:", item['name'])
-        # print("year:", item['year'])
-        # print("director:", item['director'])
-        # print("scriptwriter:", item['scriptwriter'])
-        # print("leading_role:", item['leading_role'])
-        # print("style:", item['style'])
-        # print("country:", item['country'])
-        # print("language:", item['language'])
-        # print("alias:", item['alias'])
-        # print("film_length:", item['film_length'])
-        # print("imdb_link", item['imdb_link'])
+        for field in self.field:
+            item[field[0]] = ""
+            index_list = []
+            for i in range(0, len(info)):
+                if field[1] in info[i]:
+                    i += 1
+                    index_list.append(i)
+                    while i < len(info) - 1 and info[i + 1] == "/":
+                        i += 2
+                        index_list.append(i)
+                    break
+            for index in index_list:
+                item[field[0]] += info[index] + " "
 
         # 介绍
-        # //*[@id="link-report"]/span[2]/text()[2]
         item["describe"] = ""
         describe_summarys = response.xpath(
             "//*[@id='content']//span[@property='v:summary']/text()"
@@ -191,7 +128,9 @@ class MoviesearchSpider(scrapy.Spider):
         for i in range(0, len(describe)):
             describe[i] = "".join(describe[i].split("\u3000\u3000"))
             describe[i] = "".join(describe[i].split("\n"))
-            describe[i] = "".join(describe[i].split())
+            describe[i] = "".join(
+                [describe[i].split()[j] + " " for j in range(len(describe[i].split()))]
+            )
         item["describe"] += " ".join(
             [describe[i] for i in range(0, len(describe)) if describe[i] != ""]
         )
@@ -225,10 +164,5 @@ class MoviesearchSpider(scrapy.Spider):
         ).extract_first()
         if review is not None:
             item["review"] = review.split()[1]
-
-        # print("star:", item['star'])
-        # print("evaluation:", item['evaluation'])
-        # print("comment:", item['comment'])
-        # print("review:", item['review'])
 
         yield item
