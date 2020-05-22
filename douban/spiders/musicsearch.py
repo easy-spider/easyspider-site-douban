@@ -115,9 +115,9 @@ class MusicsearchSpider(scrapy.Spider):
         item = MusicSearchItem()
 
         item["name"] = ""
-        name = response.xpath('//*[@id="wrapper"]/h1/span/text()').extract()
+        name = response.xpath('//*[@id="wrapper"]/h1/span/text()').extract_first()
         if name is not None:
-            item["name"] = name[0]
+            item["name"] = name
 
         info = response.xpath('//div[@id="info"]//text()').extract()
         for i in range(0, len(info)):
@@ -153,7 +153,11 @@ class MusicsearchSpider(scrapy.Spider):
         for i in range(0, len(describe)):
             describe[i] = "".join(describe[i].split("\u3000\u3000"))
             describe[i] = "".join(describe[i].split("\n"))
-            describe[i] = "".join(describe[i].split())
+            describe[i] = "".join(
+                [
+                    describe[i].split()[j]+' ' for j in range(len(describe[i].split()))
+                ]
+            )
         item["describe"] += " ".join(
             [describe[i] for i in range(0, len(describe)) if describe[i] != ""]
         )

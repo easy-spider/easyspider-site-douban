@@ -11,9 +11,9 @@ import os
 """
 
 test_list = [
-    {"spidername": "moviesearch", "keyword": "欧美", "pages": 10},
-    {"spidername": "booksearch", "keyword": "中国", "pages": 10},
-    {"spidername": "musicsearch", "keyword": "美国", "pages": 10},
+    {"spidername": "moviesearch", "keyword": "欧美", "pages": 5},
+    {"spidername": "booksearch", "keyword": "中国", "pages": 5},
+    {"spidername": "musicsearch", "keyword": "美国", "pages": 5},
 ]
 
 if __name__ == "__main__":
